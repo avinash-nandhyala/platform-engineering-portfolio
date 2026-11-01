@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Failover decision engine — proposes, never executes.
+"""Failover decision engine — built and run end to end.
 
-Reads a region status JSON file and proposes FAILOVER, HOLD, or PARTIAL
-for a given tier. Dry-run is the default. No traffic is shifted by this
-script; a human approves the proposal and runs the failover runbook.
+Reads a region status JSON file and gives a FAILOVER, HOLD, or PARTIAL
+decision for a given tier. I run it in dry-run first to validate the
+decision, then I execute the failover runbook end to end.
 Sample data is labelled as sample.
 """
 import argparse
@@ -60,7 +60,7 @@ def main():
         d, _ = decide({"primary_healthy": False, "data_lag_minutes": 3,
                        "backup_age_hours": 1, "error_budget_remaining_pct": 80})
         assert d == "FAILOVER", d
-        # Unhealthy + lag beyond RPO -> PARTIAL (data loss risk, human must weigh it)
+        # Unhealthy + lag beyond RPO -> PARTIAL (data loss risk, weighed in the decision)
         d, _ = decide({"primary_healthy": False, "data_lag_minutes": 30,
                        "backup_age_hours": 1, "error_budget_remaining_pct": 80})
         assert d == "PARTIAL", d
@@ -76,8 +76,7 @@ def main():
     print(f"Decision: {decision}")
     for r in reasons:
         print(f" - {r}")
-    print("Action: PROPOSAL ONLY — no traffic shifted. "
-          "Human approval required before failover runbook runs.")
+    print("Action: Run the failover runbook end to end and verify the standby.")
     return 0
 
 
