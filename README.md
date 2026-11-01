@@ -8,7 +8,7 @@ This is a **strong, senior-level portfolio** — not a basics collection. It is 
 
 ## What I do, in one paragraph
 
-I build platforms that let product teams ship without waiting on tickets, and I make production work observable and automated: multi-cluster Kubernetes with GitOps, zero-trust service mesh, SLO-driven alerting, progressive delivery, and agentic tooling that investigates incidents before a human has to. The code here proves it — it is runnable, not just described.
+I build platforms that let product teams ship without waiting on tickets, and I make production work observable and automated: multi-cluster Kubernetes with GitOps, zero-trust service mesh, SLO-driven alerting, progressive delivery, and agentic tooling that investigates incidents end to end. The code here proves it — it is runnable, not just described.
 
 ## How to read it
 
@@ -33,7 +33,7 @@ OpenShift · Kubernetes · Multi-cluster GitOps (ArgoCD) · Service Mesh, mTLS a
 ## Projects — 9, advanced first
 
 1. **multi-cluster-gitops-platform** ★ — One repo, many clusters, no drift. ArgoCD ApplicationSets, environment promotion with gates, policy checks, and a drift report.
-2. **agentic-devops-responder** ★ — An LLM incident agent with tools, not just a chatbot: it gathers pod, mesh, and metric evidence, ranks likely causes, and proposes a fix behind a human approval gate. No change is applied automatically.
+2. **agentic-devops-responder** ★ — An LLM incident agent with tools, not just a chatbot: it gathers pod, mesh, and metric evidence, ranks likely causes, and gives a fix I validate and execute end to end.
 3. **slo-observability-automation** ★ — SLO definitions, burn-rate alert rules, error-budget math, and runbook linking. Alerts that mean something, with tests for the math.
 4. **openshift-service-mesh-troubleshooting** — Intake-first mesh diagnostics: routes, gateway hosts, certificates, endpoints, pods. Catches the migration miss where gateway hosts/certs are not updated with routes, causing 503s and SSL errors while pods look healthy.
 5. **cluster-audit-decommission** — Audit workloads on a retiring cluster and surface resource-heavy pods, as a shareable list for owners.
