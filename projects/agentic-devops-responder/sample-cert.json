@@ -1,0 +1,1 @@
+{"evidence":["ssl","handshake","certificate","expired"],"id":"SAMPLE-CERT","symptom":"SSL handshake errors for one hostname"}

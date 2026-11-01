@@ -1,0 +1,1 @@
+{"evidence":["503","gateway","route moved recently","pods ready","endpoints present"],"id":"SAMPLE-503","symptom":"503 errors for one hostname, pods healthy"}
