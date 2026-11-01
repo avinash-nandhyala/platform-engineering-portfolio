@@ -1,0 +1,30 @@
+# Generic Prometheus-style SLO alerts — sample service names only.
+groups:
+  - name: slo-burn
+    rules:
+      - alert: HighErrorBudgetBurnFast
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total[5m]))
+          ) > 0.014
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "Fast error-budget burn for sample-app"
+          runbook: "runbooks/fast-burn.md"
+      - alert: HighErrorBudgetBurnSlow
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[1h]))
+            /
+            sum(rate(http_requests_total[1h]))
+          ) > 0.002
+        for: 1h
+        labels:
+          severity: ticket
+        annotations:
+          summary: "Slow error-budget burn for sample-app"
+          runbook: "runbooks/slow-burn.md"
