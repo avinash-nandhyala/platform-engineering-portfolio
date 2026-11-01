@@ -30,17 +30,18 @@ Certifications: Certified Kubernetes Administrator (CKA), AWS Certified Solution
 
 OpenShift · Kubernetes · Multi-cluster GitOps (ArgoCD) · Service Mesh, mTLS and Zero Trust · AWS · GCP / GKE · Terraform · Ansible · Pulumi · CloudFormation · Python · Go · Bash · Java / Spring Boot · Gradle / Maven · CI/CD and Progressive Delivery · Prometheus, Grafana, Dynatrace, Kiali, OpenTelemetry · SLOs, error budgets, burn-rate alerting · Incident response and blameless postmortems · Generative AI integration and agentic DevOps · vLLM on Kubernetes · Security scanning and policy · Cost optimisation
 
-## Projects — 9, advanced first
+## Projects — 10, advanced first
 
 1. **multi-cluster-gitops-platform** ★ — One repo, many clusters, no drift. ArgoCD ApplicationSets, environment promotion with gates, policy checks, and a drift report.
 2. **agentic-devops-responder** ★ — An LLM incident agent with tools, not just a chatbot: it gathers pod, mesh, and metric evidence, ranks likely causes, and gives a fix I validate and execute end to end.
 3. **slo-observability-automation** ★ — SLO definitions, burn-rate alert rules, error-budget math, and runbook linking. Alerts that mean something, with tests for the math.
-4. **openshift-service-mesh-troubleshooting** — Intake-first mesh diagnostics: routes, gateway hosts, certificates, endpoints, pods. Catches the migration miss where gateway hosts/certs are not updated with routes, causing 503s and SSL errors while pods look healthy.
-5. **cluster-audit-decommission** — Audit workloads on a retiring cluster and surface resource-heavy pods, as a shareable list for owners.
-6. **team-request-tracker** — Shared-mailbox work made countable and reportable: intake, owner, status, weekly summary.
-7. **vllm-on-openshift-lab** — LLM inference on OpenShift with the vLLM operator, model wiring, autoscaling notes, and honest GPU sizing.
-8. **kubernetes-platform-cicd** — Terraform, GitHub Actions, canary-ready Kubernetes manifests with probes, limits, and security scanning.
-9. **incident-memory** — Searchable incident memory CLI: ask about a symptom, get the previous fix.
+4. **kubernetes-disaster-recovery-failover** ★ — Multi-region disaster recovery I run end to end: Velero backups, restore drills, RTO/RPO tiers, a failover decision engine, and runbooks for drill, failover, and rollback.
+5. **openshift-service-mesh-troubleshooting** — Intake-first mesh diagnostics: routes, gateway hosts, certificates, endpoints, pods. Catches the migration miss where gateway hosts/certs are not updated with routes, causing 503s and SSL errors while pods look healthy.
+6. **cluster-audit-decommission** — Audit workloads on a retiring cluster and surface resource-heavy pods, as a shareable list for owners.
+7. **team-request-tracker** — Shared-mailbox work made countable and reportable: intake, owner, status, weekly summary.
+8. **vllm-on-openshift-lab** — LLM inference on OpenShift with the vLLM operator, model wiring, autoscaling notes, and honest GPU sizing.
+9. **kubernetes-platform-cicd** — Terraform, GitHub Actions, canary-ready Kubernetes manifests with probes, limits, and security scanning.
+10. **incident-memory** — Searchable incident memory CLI: ask about a symptom, get the previous fix.
 
 ## Running the site locally
 
