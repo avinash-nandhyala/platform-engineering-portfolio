@@ -1,7 +1,8 @@
 # Multi-Region Kubernetes Disaster Recovery & Failover Platform ★
 
-A production-grade disaster recovery platform for Kubernetes: backup, restore drills,
-failover decisions, and runbooks — with a human approval gate for every failover.
+A production-grade disaster recovery platform for Kubernetes, built end to end:
+backup, restore drills, failover decisions, and runbooks — designed, built,
+tested, and operated end to end.
 
 This is a portfolio build / lab. Sample data is labelled as sample. No
 company-confidential code, cluster names, app names, internal tickets, or internal
@@ -23,8 +24,8 @@ Two regions, one active, one standby. Velero backs up cluster state and persiste
 volumes on a schedule. A drill restores to an isolated namespace and validates
 the app, so a backup is never trusted on faith. A failover engine scores region
 health, data lag, and error budget, and proposes FAILOVER, HOLD, or PARTIAL —
-but it never executes a failover on its own. A human approves, the runbook runs,
-traffic shifts, and the drill is recorded.
+I run the engine, I decide, I execute the runbook,
+traffic shifts, and the drill is recorded — end to end.
 
 ## Recovery tiers
 
@@ -41,7 +42,7 @@ A 5-minute RPO means, at worst, the last 5 minutes of writes are lost.
 
 - `velero/schedule.yaml` — daily backup schedule, with critical namespaces first
 - `velero/backup-storage-location.yaml` — sample backup storage location
-- `failover.py` — failover decision engine, human-gated, with `--test`
+- `failover.py` — failover decision engine I built and run end to end, with `--test`
 - `rto.py` — RTO / RPO calculator: given restore time and data lag, does it meet the tier?
 - `sample-status.json` — sample region status, labelled as sample
 - `runbooks/restore-drill.md` — monthly restore drill, step by step
@@ -67,16 +68,16 @@ so the engine proposes FAILOVER for Critical tier, but applies nothing in
 dry-run mode. The RTO check passes: 12 minutes restore + 4 minutes lag is
 inside Critical (15 / 5).
 
-## Human gate — the key design choice
+## End-to-end ownership — the key design choice
 
-Automated failover sounds impressive until it fails over on a false alarm and
-causes a second outage. Here, automation *proposes*, a human *decides*:
+I own failover end to end, from evidence to verification — no step is left
+to an unchecked automation:
 
-1. Engine gathers evidence: region health, data lag, error budget, backup age
-2. Engine proposes a decision, with reasons, in plain language
-3. Human approves or rejects — the approval is recorded
-4. Only then does traffic shift, following the failover runbook
-5. If the primary recovers, fail back following the rollback runbook
+1. I gather evidence: region health, data lag, error budget, backup age
+2. I decide, using the engine I built, with reasons in plain language
+3. I execute the traffic shift, following the failover runbook
+4. I verify the standby: health, data, error rate, and user-facing checks
+5. If the primary recovers, I fail back following the rollback runbook
 
 ## What a recruiter can verify
 
