@@ -1,0 +1,1 @@
+{"_note":"SAMPLE data only, for portfolio demonstration. Not a real cluster.","backup_age_hours":2,"data_lag_minutes":3,"error_budget_remaining_pct":65,"primary_healthy":false,"primary_region":"region-a-sample","standby_region":"region-b-sample"}

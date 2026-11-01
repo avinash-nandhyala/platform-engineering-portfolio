@@ -1,66 +1,87 @@
-# Avinash Nandhyala — Senior Platform / DevOps / SRE Portfolio
+# Multi-Region Kubernetes Disaster Recovery & Failover Platform ★
 
-GitHub: avinash-nandhyala · LinkedIn: linkedin.com/in/avinash-reddy-203422439 · Email: avinashnandhyala12@gmail.com
+A production-grade disaster recovery platform for Kubernetes: backup, restore drills,
+failover decisions, and runbooks — with a human approval gate for every failover.
 
-No personal location is listed in this portfolio, by design.
+This is a portfolio build / lab. Sample data is labelled as sample. No
+company-confidential code, cluster names, app names, internal tickets, or internal
+data are included.
 
-This is a **strong, senior-level portfolio** — not a basics collection. It is built for DevOps, Site Reliability, Developer Productivity / Platform, and AI Infrastructure roles at Apple, Google, Amazon, Netflix, Red Hat, ServiceNow, Salesforce, Dynatrace, Cisco, NVIDIA, Samsung and others.
+## Why this is strong
 
-## What I do, in one paragraph
+Most portfolios show how to deploy an app. This shows how to *save* one when a
+whole region goes down — the question senior SRE and platform engineers are
+actually hired to answer:
 
-I build platforms that let product teams ship without waiting on tickets, and I make production work observable and automated: multi-cluster Kubernetes with GitOps, zero-trust service mesh, SLO-driven alerting, progressive delivery, and agentic tooling that investigates incidents before a human has to. The code here proves it — it is runnable, not just described.
+- Can we restore? How fast? How much data do we lose?
+- Who decides to fail over, and what evidence do they need?
+- How do we prove it works, before a real outage forces us to find out?
 
-## How to read it
+## Architecture, in one paragraph
 
-- Start with `index.html` — the portfolio site. Open it in any browser, no build step needed.
-- Each project in `projects/` is standalone and runnable. Advanced projects are marked ★ on the site.
-- Sample data is clearly labelled as sample. No company-confidential code, cluster names, app names, internal tickets, or internal data are included. Projects built for this portfolio are presented as portfolio builds / labs, not as claims about a specific employer's production systems.
+Two regions, one active, one standby. Velero backs up cluster state and persistent
+volumes on a schedule. A drill restores to an isolated namespace and validates
+the app, so a backup is never trusted on faith. A failover engine scores region
+health, data lag, and error budget, and proposes FAILOVER, HOLD, or PARTIAL —
+but it never executes a failover on its own. A human approves, the runbook runs,
+traffic shifts, and the drill is recorded.
 
-## Experience
+## Recovery tiers
 
-- **Senior Cloud Engineer — OpenShift** — Oct 2025 to present
-- **System Engineer — DevOps, Virtusa** — Jun 2022 to Jul 2023
-- **DevOps / Site Reliability Engineer, LTIMindtree** — May 2019 to May 2022
+| Tier | RTO | RPO | Example |
+|------|-----|-----|---------|
+| Critical | 15 minutes | 5 minutes | Checkout, payments, auth |
+| Standard | 1 hour | 1 hour | Internal tools, reporting |
+| Best effort | 24 hours | 24 hours | Batch jobs, archives |
 
-Education: MS in Computer / Information Technology (2023–2025).
+RTO = how fast you are back. RPO = how much data you can afford to lose.
+A 5-minute RPO means, at worst, the last 5 minutes of writes are lost.
 
-Certifications: Certified Kubernetes Administrator (CKA), AWS Certified Solutions Architect, AWS / Azure Certified DevOps Engineer, Linux Foundation Certified System Administrator.
+## Files
 
-## Senior stack
+- `velero/schedule.yaml` — daily backup schedule, with critical namespaces first
+- `velero/backup-storage-location.yaml` — sample backup storage location
+- `failover.py` — failover decision engine, human-gated, with `--test`
+- `rto.py` — RTO / RPO calculator: given restore time and data lag, does it meet the tier?
+- `sample-status.json` — sample region status, labelled as sample
+- `runbooks/restore-drill.md` — monthly restore drill, step by step
+- `runbooks/failover.md` — failover runbook, with rollback
+- `runbooks/rollback.md` — how to fail back when the primary region recovers
 
-OpenShift · Kubernetes · Multi-cluster GitOps (ArgoCD) · Service Mesh, mTLS and Zero Trust · AWS · GCP / GKE · Terraform · Ansible · Pulumi · CloudFormation · Python · Go · Bash · Java / Spring Boot · Gradle / Maven · CI/CD and Progressive Delivery · Prometheus, Grafana, Dynatrace, Kiali, OpenTelemetry · SLOs, error budgets, burn-rate alerting · Incident response and blameless postmortems · Generative AI integration and agentic DevOps · vLLM on Kubernetes · Security scanning and policy · Cost optimisation
-
-## Projects — 9, advanced first
-
-1. **multi-cluster-gitops-platform** ★ — One repo, many clusters, no drift. ArgoCD ApplicationSets, environment promotion with gates, policy checks, and a drift report.
-2. **agentic-devops-responder** ★ — An LLM incident agent with tools, not just a chatbot: it gathers pod, mesh, and metric evidence, ranks likely causes, and proposes a fix behind a human approval gate. No change is applied automatically.
-3. **slo-observability-automation** ★ — SLO definitions, burn-rate alert rules, error-budget math, and runbook linking. Alerts that mean something, with tests for the math.
-4. **openshift-service-mesh-troubleshooting** — Intake-first mesh diagnostics: routes, gateway hosts, certificates, endpoints, pods. Catches the migration miss where gateway hosts/certs are not updated with routes, causing 503s and SSL errors while pods look healthy.
-5. **cluster-audit-decommission** — Audit workloads on a retiring cluster and surface resource-heavy pods, as a shareable list for owners.
-6. **team-request-tracker** — Shared-mailbox work made countable and reportable: intake, owner, status, weekly summary.
-7. **vllm-on-openshift-lab** — LLM inference on OpenShift with the vLLM operator, model wiring, autoscaling notes, and honest GPU sizing.
-8. **kubernetes-platform-cicd** — Terraform, GitHub Actions, canary-ready Kubernetes manifests with probes, limits, and security scanning.
-9. **incident-memory** — Searchable incident memory CLI: ask about a symptom, get the previous fix.
-
-## Running the site locally
-
-```bash
-cd portfolio
-python3 -m http.server 8000
-# open http://localhost:8000
-```
-
-## Running the advanced projects
-
-See each project's README. In short:
+## Run it
 
 ```bash
-python3 projects/team-request-tracker/tracker.py --report
-python3 projects/incident-memory/incident-memory.py "503 gateway"
-python3 projects/slo-observability-automation/slo.py --test
-python3 projects/agentic-devops-responder/responder.py --incident sample-503.json --dry-run
+# Check a failover decision from sample status (dry-run, no change applied)
+python3 failover.py --status sample-status.json --dry-run
+
+# Check whether a restore meets the Critical tier
+python3 rto.py --restore-minutes 12 --data-lag-minutes 4 --tier critical
+
+# Run the built-in tests
+python3 failover.py --test
+python3 rto.py --test
 ```
 
-## Contact
+Expected sample output: the sample region is unhealthy, data lag is 3 minutes,
+so the engine proposes FAILOVER for Critical tier, but applies nothing in
+dry-run mode. The RTO check passes: 12 minutes restore + 4 minutes lag is
+inside Critical (15 / 5).
 
-avinashnandhyala12@gmail.com · GitHub: avinash-nandhyala · LinkedIn above.
+## Human gate — the key design choice
+
+Automated failover sounds impressive until it fails over on a false alarm and
+causes a second outage. Here, automation *proposes*, a human *decides*:
+
+1. Engine gathers evidence: region health, data lag, error budget, backup age
+2. Engine proposes a decision, with reasons, in plain language
+3. Human approves or rejects — the approval is recorded
+4. Only then does traffic shift, following the failover runbook
+5. If the primary recovers, fail back following the rollback runbook
+
+## What a recruiter can verify
+
+- `failover.py --test` passes, and the decision logic is readable, not magic
+- `rto.py --test` passes, and the tier math is explicit
+- The Velero manifests are real, apply-ready shapes, not screenshots
+- The runbooks cover drill, failover, and rollback — the three things that
+  actually go wrong in a real disaster
