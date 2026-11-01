@@ -4,7 +4,7 @@
 A minimal, readable platform starter that a DevOps / platform engineer would recognise immediately:
 
 - Terraform (`terraform/`) — generic cloud networking + Kubernetes cluster inputs, with variables instead of hard-coded accounts or regions.
-- GitHub Actions (` .github/workflows/ci-cd.yaml` in this folder as `ci-cd.yaml`) — build, test, and deploy on push to main, with a manual approval feel via environment protection in a real repo.
+- GitHub Actions (` .github/workflows/ci-cd.yaml` in this folder as `ci-cd.yaml`) — build, test, and deploy on push to main, with controlled promotion via environment protection in a real repo.
 - Kubernetes manifests (`k8s/`) — Deployment with health probes, resource requests/limits, and a rolling update strategy, plus a Service.
 
 ## Principles shown
