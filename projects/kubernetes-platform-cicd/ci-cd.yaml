@@ -1,0 +1,14 @@
+# Generic GitHub Actions CI/CD — copy to .github/workflows/ci-cd.yaml in a real repo.
+name: CI-CD
+on:
+  push:
+    branches: [main]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: echo "Build your image here: docker build -t <your-registry>/<your-app>:${{ github.sha }} ."
+      - name: Deploy (placeholder)
+        run: echo "Deploy with kubectl apply -f k8s/ after configuring cluster credentials via secrets."
