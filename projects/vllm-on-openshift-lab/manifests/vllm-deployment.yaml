@@ -1,0 +1,41 @@
+# Generic vLLM lab manifest — replace placeholders with your own model and cluster values.
+# This is a starting point for a lab, not a production deployment.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vllm-lab
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm
+  namespace: vllm-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm
+  template:
+    metadata:
+      labels:
+        app: vllm
+    spec:
+      containers:
+        - name: vllm
+          image: <your-vllm-image>
+          args:
+            - "--model"
+            - "<your-model-path>"
+            - "--max-model-len"
+            - "4096"
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              nvidia.com/gpu: "1"
+              memory: "16Gi"
+              cpu: "4"
+            limits:
+              nvidia.com/gpu: "1"
+              memory: "32Gi"
+              cpu: "8"
