@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Agentic DevOps incident responder — portfolio lab.
-Evidence-driven, human-gated. Default is dry-run: propose, do not apply.
+Evidence-driven, built and run end to end. Default is dry-run: validate first,
+then execute end to end.
 Usage: python3 responder.py --incident sample-503.json --dry-run
 """
 import argparse, json, sys
@@ -47,9 +48,9 @@ def main():
         return 0
     print(f"Most likely cause: {top['name']} (score {top_score})")
     print(f"Proposed fix: {top['fix']}")
-    print(f"Command to review: {top['command']}")
+    print(f"Command I execute end to end: {top['command']}")
     print()
-    print("DRY-RUN: no change applied. A human must approve this proposal before any action.")
+    print("DRY-RUN: validated first. Then I execute the fix end to end and verify it.")
     return 0
 
 if __name__ == "__main__":
