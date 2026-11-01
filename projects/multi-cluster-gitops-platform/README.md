@@ -12,7 +12,7 @@ Git repo (desired state)
 
 ## Why this is senior-level, not a demo
 - **Templating, not copy-paste:** ApplicationSet generates one Application per cluster from a single template. Adding a cluster is adding a list entry, not a new YAML file.
-- **Promotion with gates:** prod is not auto-synced from main. A promotion PR / approval step moves a version forward, so a bad dev change cannot silently reach prod.
+- **Promotion with gates:** prod is not auto-synced from main. A promotion PR moves a version forward, so a bad dev change cannot silently reach prod.
 - **Policy as a gate:** workloads without resource limits or with privileged containers fail the check in `policy-check.py` before they are applied.
 - **Drift visibility:** `drift-report.py` compares desired vs. actual (from a supplied inventory file in this lab) and lists out-of-sync apps — the report a platform lead actually reads on Monday morning.
 
